@@ -63,7 +63,7 @@ db.once("open", function() {
 app.use(methodOverride("_method"));
 
 // Static directory - give you access to the stuff in the public folder
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 // Set Handlebars.
 var exphbs = require("express-handlebars");
@@ -123,8 +123,21 @@ app.get("/", function (req, res) {
 		else{
 			res.render("index", {article: doc} );
 		}
-	})
+	});
+});
+
+
+app.put("/saved", function(req, res) {
+  Article.findOneAndUpdate({}, {$set: {saved: true}}, function(err, doc) {
+    if (err) {
+      res.send(err);
+    }
+    else {
+      res.redirect("/");
+    }
+  });
 })
+
 
 
 
