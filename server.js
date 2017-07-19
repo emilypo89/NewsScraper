@@ -22,6 +22,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var methodOverride = require("method-override");
 // Requiring our Note and Article models
 var Note = require("./models/Note.js");
 var Article = require("./models/Article.js");
@@ -58,25 +59,36 @@ db.once("open", function() {
   console.log("Mongoose connection successful.");
 });
 
+// Override with POST having ?_method=DELETE
+app.use(methodOverride("_method"));
+
+// Static directory - give you access to the stuff in the public folder
+app.use(express.static("public"));
+
+// Set Handlebars.
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 
 // ======
 // Routes
 // ======
 
-// A GET request to scrape the echojs website
+// A GET request to scrape the Smithsonian magazine website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   request("http://www.smithsonianmag.com/", function(error, response, html) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
-    // Now, we grab every h2 within an article tag, and do the following:
+    // Now, we grab every h3 within an article tag, and do the following:
     $("h3.headline").each(function(i, element) {
 
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
-
       result.title = $(this).children("a").text();
       result.link = $(this).children("a").attr("href");
 
@@ -102,7 +114,17 @@ app.get("/scrape", function(req, res) {
   res.send("Scrape Complete");
 });
 
+app.get("/", function (req, res) {
+	Article.find({}, function(err, doc) {
+		if (err) {
+			res.send(err);
+		}
 
+		else{
+			res.render("index", {article: doc} );
+		}
+	})
+})
 
 
 
