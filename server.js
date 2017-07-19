@@ -136,7 +136,62 @@ app.put("/saved", function(req, res) {
       res.redirect("/");
     }
   });
-})
+});
+
+app.get("/saved", function(req, res) {
+  Article.find({saved: true}).populate("notes").exec(function(err, doc) {
+    if (err) {
+      res.send(err);
+    }
+    else {
+      res.render("saved", {saved: doc});
+      console.log(doc);
+    }
+  });
+});
+
+// New note creation via POST route
+app.post("/saved/notes", function(req, res) {
+  var newNote = new Note(req.body);
+  console.log(newNote);
+  newNote.save(function(error, doc) {
+    if (error) {
+      res.send(error);
+    }
+    else {
+      Article.findOneAndUpdate({}, { $push: { "notes": doc._id } }, { new: true }, function(err, newdoc) {
+        if (err) {
+          res.send(err);
+        }
+        else {
+          res.redirect("/saved");
+        }
+      });
+    }
+  });
+});
+
+app.get("saved/notes", function(req, res) {
+  Article.find({}).populate("notes").exec(function(err, doc) {
+    if (err) {
+      res.send(err);
+    }
+    else {
+      res.render("saved", {savedNote: doc});
+    }
+  });
+});
+
+app.put("/delete", function(req, res) {
+  Article.findOneAndUpdate({}, {$set: {saved: false}}, function(err, doc) {
+    if (err) {
+      res.send(err);
+    }
+    else {
+      res.redirect("/saved");
+    }
+  });
+});
 
 
 
