@@ -3,9 +3,22 @@ body{
 	font-family: 'Inconsolata', monospace;
 }
 
+a {
+	color: #fff;
+	font-size: 17px;
+}
+
 .navbar{
 	background-color: #004445;
 	border: solid 1px #004445;
+	color: #fff;
+}
+
+.navButton {
+	color: #6FB98F;
+}
+
+.navbar-brand {
 	color: #fff;
 }
 
@@ -24,16 +37,16 @@ body{
 	color: #6FB98F;
 }
 
+.btn{
+	color: #004445;
+	font-size: 15px;
+}
+
 #panelHead{
 	background-color: #021C1E;
 	color: #6FB98F;
+	font-size: 25px;
 }
 
-#articleButton {
-	color: #004445;
-}
 
-#addNote{
-	color: #004445;
-	left: 50px;
-}
+

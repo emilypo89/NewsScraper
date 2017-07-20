@@ -182,7 +182,7 @@ app.put("/delete/:id", function(req, res) {
 });
 
 app.delete("/saved/delete/:id", function(req, res) {
-  Article.remove({notes: req.params.id}, function(err, doc){
+  Note.remove({_id: req.params.id}, function(err, doc){
     if (err) {
       res.send(err);
     }
