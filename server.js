@@ -127,8 +127,8 @@ app.get("/", function (req, res) {
 });
 
 
-app.put("/saved", function(req, res) {
-  Article.findOneAndUpdate({}, {$set: {saved: true}}, function(err, doc) {
+app.put("/saved/:id", function(req, res) {
+  Article.update({_id: req.params.id}, {$set: {saved: true}}, function(err, doc) {
     if (err) {
       res.send(err);
     }
@@ -146,12 +146,14 @@ app.get("/saved", function(req, res) {
     else {
       res.render("saved", {saved: doc});
       console.log(doc);
+      // console.log(doc[0].notes);
+      console.log(doc.id);
     }
   });
 });
 
 // New note creation via POST route
-app.post("/saved/notes", function(req, res) {
+app.post("/saved/notes/:id", function(req, res) {
   var newNote = new Note(req.body);
   console.log(newNote);
   newNote.save(function(error, doc) {
@@ -159,7 +161,7 @@ app.post("/saved/notes", function(req, res) {
       res.send(error);
     }
     else {
-      Article.findOneAndUpdate({}, { $push: { "notes": doc._id } }, { new: true }, function(err, newdoc) {
+      Article.findOneAndUpdate({_id: req.params.id}, { $push: { "notes": doc._id } }, { new: true }, function(err, newdoc) {
         if (err) {
           res.send(err);
         }
@@ -171,19 +173,30 @@ app.post("/saved/notes", function(req, res) {
   });
 });
 
-app.get("saved/notes", function(req, res) {
-  Article.find({}).populate("notes").exec(function(err, doc) {
+// app.get("saved/notes", function(req, res) {
+//   Article.find({}).populate("notes").exec(function(err, doc) {
+//     if (err) {
+//       res.send(err);
+//     }
+//     else {
+//       res.render("saved", {savedNote: doc});
+//     }
+//   });
+// });
+
+app.put("/delete/:id", function(req, res) {
+  Article.findOneAndUpdate({_id: req.params.id}, {$set: {saved: false}}, function(err, doc) {
     if (err) {
       res.send(err);
     }
     else {
-      res.render("saved", {savedNote: doc});
+      res.redirect("/saved");
     }
   });
 });
 
-app.put("/delete", function(req, res) {
-  Article.findOneAndUpdate({}, {$set: {saved: false}}, function(err, doc) {
+app.delete("/saved/delete/:id", function(req, res) {
+  Article.remove({notes: req.params.id}, function(err, doc){
     if (err) {
       res.send(err);
     }
