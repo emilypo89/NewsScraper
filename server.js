@@ -111,7 +111,7 @@ app.get("/scrape", function(req, res) {
     });
   });
   // Tell the browser that we finished scraping the text
-  res.send("Scrape Complete");
+  res.redirect("/");
 });
 
 app.get("/", function (req, res) {
@@ -145,9 +145,6 @@ app.get("/saved", function(req, res) {
     }
     else {
       res.render("saved", {saved: doc});
-      console.log(doc);
-      console.log(doc[0].notes.body);
-      // console.log(doc.id);
     }
   });
 });
@@ -172,17 +169,6 @@ app.post("/saved/notes/:id", function(req, res) {
     }
   });
 });
-
-// app.get("saved/notes", function(req, res) {
-//   Article.find({}).populate("notes").exec(function(err, doc) {
-//     if (err) {
-//       res.send(err);
-//     }
-//     else {
-//       res.render("saved", {savedNote: doc});
-//     }
-//   });
-// });
 
 app.put("/delete/:id", function(req, res) {
   Article.findOneAndUpdate({_id: req.params.id}, {$set: {saved: false}}, function(err, doc) {
