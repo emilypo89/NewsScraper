@@ -1,7 +1,39 @@
 body{
-	background-color: black;
+	background-color: #6FB98F;
+	font-family: 'Inconsolata', monospace;
 }
 
-#navbar{
+.navbar{
 	background-color: #004445;
+	border: solid 1px #004445;
+	color: #fff;
+}
+
+.jumbotron{
+	text-align: center;
+	background: url("../images/IMG_0139.jpg");
+}
+
+.panel-body {
+	background-color: #2C7873;
+	color: #fff;
+}
+
+.modal-header{
+	background-color: #021C1E;
+	color: #6FB98F;
+}
+
+#panelHead{
+	background-color: #021C1E;
+	color: #6FB98F;
+}
+
+#articleButton {
+	color: #004445;
+}
+
+#addNote{
+	color: #004445;
+	left: 50px;
 }
