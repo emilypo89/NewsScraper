@@ -139,15 +139,15 @@ app.put("/saved/:id", function(req, res) {
 });
 
 app.get("/saved", function(req, res) {
-  Article.find({saved: true}).populate("notes").exec(function(err, doc) {
+  Article.find({saved: true}).populate("notes", 'body').exec(function(err, doc) {
     if (err) {
       res.send(err);
     }
     else {
       res.render("saved", {saved: doc});
       console.log(doc);
-      // console.log(doc[0].notes);
-      console.log(doc.id);
+      console.log(doc[0].notes.body);
+      // console.log(doc.id);
     }
   });
 });
@@ -155,13 +155,13 @@ app.get("/saved", function(req, res) {
 // New note creation via POST route
 app.post("/saved/notes/:id", function(req, res) {
   var newNote = new Note(req.body);
-  console.log(newNote);
+  console.log("new note" + newNote);
   newNote.save(function(error, doc) {
     if (error) {
       res.send(error);
     }
     else {
-      Article.findOneAndUpdate({_id: req.params.id}, { $push: { "notes": doc._id } }, { new: true }, function(err, newdoc) {
+      Article.findOneAndUpdate({_id: req.params.id}, { $push: { "notes": doc._id } }, { new: true }).exec(function(err, newdoc) {
         if (err) {
           res.send(err);
         }

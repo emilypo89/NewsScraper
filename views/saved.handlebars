@@ -62,21 +62,23 @@
         <h4 class="modal-title">Write a note</h4>
       </div>
       <div class="modal-body">
-          {{!-- need to figure out how to refereence each body individually --}}
+          {{#each this.notes}}
           <div class="row">
-            {{#each this.notes}}
-            {{this.body}}
-            {{/each}}
-            <form class="navbar-form navbar-right" method="POST" action="/saved/delete/{{this.notes}}?_method=DELETE">
+            
+              {{this.body}}
+            
+            {{!-- {{this.notes.body}} --}}
+            <form class="navbar-form navbar-right" method="POST" action="/saved/delete/{{this.id}}?_method=DELETE">
               <button type="submit" class="btn btn-default">Delete Article</button>
             </form>
           </div>
+          {{/each}}
         
         <div class="row">
           <form class="navbar-form navbar-left" action="/saved/notes/{{this.id}}" method="POST">
             <div class="form-group">
               <label for="apptNotes">Notes</label>
-              <textarea class="form-control" rows="3" id="apptNotes" name="notes" placeholder="Notes"></textarea>
+              <textarea class="form-control" rows="3" id="apptNotes" name="body" placeholder="Notes"></textarea>
             </div>
             <button type="submit" class="btn btn-default">Save</button>
           </form>
