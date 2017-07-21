@@ -49,7 +49,7 @@ app.use(express.static("public"));
 var databaseURL = "mongodb://localhost/newsScraper";
 
 if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI);
+  mongoose.connect("mongodb://heroku_hw3fzb4z:rkem0d1u69h4vbcqrv6gjf0i9@ds123371.mlab.com:23371/heroku_hw3fzb4z");
 }
 else {
   mongoose.connect(databaseURL);
