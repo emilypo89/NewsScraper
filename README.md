@@ -18,7 +18,7 @@ The user can then click on the note button to add a note about that particular a
 
 All of these notes are saved in the database within their own collection. 
 
-![notes](./public/assets/image/notes.png)
+![notes](./public/assets/images/notes.png)
 
 If the user decides that they no long would like to keep a saved article they can click on the delete article button and the article will be removed from their saved article page.
 
