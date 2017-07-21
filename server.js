@@ -121,6 +121,8 @@ app.get("/scrape", function(req, res) {
   res.redirect("/");
 });
 
+
+// get route to display the scraped articles on the index.handlebars page
 app.get("/", function (req, res) {
 	Article.find({}, function(err, doc) {
 		if (err) {
@@ -133,7 +135,7 @@ app.get("/", function (req, res) {
 	});
 });
 
-
+// put route to updated the article to be saved:true
 app.put("/saved/:id", function(req, res) {
   Article.update({_id: req.params.id}, {$set: {saved: true}}, function(err, doc) {
     if (err) {
@@ -145,6 +147,7 @@ app.put("/saved/:id", function(req, res) {
   });
 });
 
+// get request to display all of the saved articles on the saved.handlebars page
 app.get("/saved", function(req, res) {
   Article.find({saved: true}).populate("notes", 'body').exec(function(err, doc) {
     if (err) {
@@ -156,7 +159,7 @@ app.get("/saved", function(req, res) {
   });
 });
 
-// New note creation via POST route
+// post route to create a new note
 app.post("/saved/notes/:id", function(req, res) {
   var newNote = new Note(req.body);
   console.log("new note" + newNote);
@@ -177,6 +180,8 @@ app.post("/saved/notes/:id", function(req, res) {
   });
 });
 
+// put route to update the article and changed the saved:false
+// will no longer be displayed on the saved page with the page reloads
 app.put("/delete/:id", function(req, res) {
   Article.findOneAndUpdate({_id: req.params.id}, {$set: {saved: false}}, function(err, doc) {
     if (err) {
@@ -188,6 +193,7 @@ app.put("/delete/:id", function(req, res) {
   });
 });
 
+// delete route to delete a note
 app.delete("/saved/delete/:id", function(req, res) {
   Note.remove({_id: req.params.id}, function(err, doc){
     if (err) {
